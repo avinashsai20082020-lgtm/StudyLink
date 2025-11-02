@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyLink</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3b82f6; /* light blue */
+            --secondary-color: #10b981; /* soft green */
+            --background-light: #f1f5f9;
+            --card-light: #ffffff;
+            --text-light: #0f172a;
+            --text-secondary-light: #64748b;
+            --border-light: #e2e8f0;
+            --font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-light);
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #app {
+            width: 100%;
+            height: 100%;
+            display: flex;
+        }
+
+        /* Login Page */
+        #login-page {
+            margin: auto;
+            background-color: var(--card-light);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            width: 100%;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #login-form {
+            width: 100%;
+        }
+
+        #login-page h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+
+        #login-page p {
+            color: var(--text-secondary-light);
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-light);
+            box-sizing: border-box;
+            background-color: #f8fafc;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: none;
+            box-sizing: border-box;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-google {
+            background-color: #4285F4;
+            color: white;
+        }
+
+        .btn-google:hover {
+            background-color: #3367D6;
+        }
+
+        #login-page a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        /* Dashboard */
+        #dashboard-page {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background-color: var(--card-light);
+            padding: 20px;
+            border-right: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+
+        #create-group-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            width: 100%;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        #group-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--background-light);
+        }
+
+        header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--card-light);
+        }
+
+        header input {
+            width: 50%;
+        }
+
+        .profile-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-menu img {
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        #logout-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        #group-chat-section {
+            padding: 20px;
+            flex-grow: 1;
+            text-align: center;
+            color: var(--text-secondary-light);
+        }
+
+        /* Modal */
+        #create-group-modal {
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+        .close-btn {
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            border: none;
+            background: none;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        /* Chat Section */
+        #group-chat-section {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-light);
+            background-color: var(--card-light);
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message-bubble {
+            padding: 12px 18px;
+            border-radius: 20px;
+            max-width: 70%;
+            width: fit-content;
+        }
+
+        .message-bubble.sent {
+            background-color: var(--primary-color);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message-bubble.received {
+            background-color: var(--card-light);
+            color: var(--text-light);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message-bubble p {
+            margin: 0 0 5px 0;
+        }
+
+        .message-bubble span {
+            font-size: 0.75rem;
+            color: #e2e8f0;
+        }
+
+        .message-bubble.received span {
+            color: var(--text-secondary-light);
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 20px;
+            border-top: 1px solid var(--border-light);
+            background-color: var(--card-light);
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            margin-right: 15px;
+        }
+
+        .chat-input button {
+            width: auto;
+            padding: 12px 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Login Page -->
+        <div id="login-page">
+            <h1>StudyLink</h1>
+            <p>Learn Together, Succeed Faster</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <input type="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <button id="google-login" class="btn btn-google">Login with Google</button>
+            <p>Don't have an account? <a href="#" id="signup-link">Sign up</a></p>
+        </div>
+
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" style="display: none;">
+            <div class="sidebar">
+                <h2>Groups</h2>
+                <button id="create-group-btn">+ Create Group</button>
+                <ul id="group-list">
+                    <!-- Example group -->
+                    <li>Mathematics</li>
+                    <li>History Buffs</li>
+                </ul>
+            </div>
+            <div class="main-content">
+                <header>
+                    <input type="text" placeholder="Search groups...">
+                    <div class="profile-menu">
+                        <img src="https://via.placeholder.com/40" alt="User Avatar">
+                        <button id="logout-btn">Logout</button>
+                    </div>
+                </header>
+                <div id="group-chat-section">
+                    <!-- This will be populated dynamically -->
+                    <div class="chat-header">
+                        <h3>Mathematics</h3>
+                    </div>
+                    <div class="chat-messages">
+                        <div class="message-bubble received">
+                            <p>Hey everyone, I'm struggling with calculus. Any tips?</p>
+                            <span>Alice - 10:30 AM</span>
+                        </div>
+                        <div class="message-bubble sent">
+                            <p>Sure, I can help! What topic are you on?</p>
+                            <span>You - 10:31 AM</span>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" placeholder="Type a message...">
+                        <button class="btn-primary">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Group Modal -->
+        <div id="create-group-modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Create a New Group</h2>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <form id="create-group-form">
+                    <div class="form-group">
+                        <input type="text" placeholder="Group Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Subject" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Description" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginPage = document.getElementById('login-page');
+            const dashboardPage = document.getElementById('dashboard-page');
+            const createGroupModal = document.getElementById('create-group-modal');
+
+            const loginForm = document.getElementById('login-form');
+            const createGroupBtn = document.getElementById('create-group-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const closeModalBtn = createGroupModal.querySelector('.close-btn');
+            const createGroupForm = document.getElementById('create-group-form');
+
+            // --- Page Navigation ---
+            function showDashboard() {
+                loginPage.style.display = 'none';
+                dashboardPage.style.display = 'flex';
+            }
+
+            function showLogin() {
+                dashboardPage.style.display = 'none';
+                loginPage.style.display = 'flex';
+            }
+
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // In a real app, you'd have auth logic here
+                console.log('Login form submitted');
+                showDashboard();
+            });
+
+            logoutBtn.addEventListener('click', () => {
+                console.log('Logged out');
+                showLogin();
+            });
+
+            // --- Modal Handling ---
+            function openCreateGroupModal() {
+                createGroupModal.style.display = 'flex';
+            }
+
+            function closeCreateGroupModal() {
+                createGroupModal.style.display = 'none';
+            }
+
+            createGroupBtn.addEventListener('click', openCreateGroupModal);
+            closeModalBtn.addEventListener('click', closeCreateGroupModal);
+
+            createGroupModal.addEventListener('click', (e) => {
+                if (e.target === createGroupModal) {
+                    closeCreateGroupModal();
+                }
+            });
+
+            createGroupForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const groupName = e.target.querySelector('input[type="text"]').value;
+                console.log(`New group created: ${groupName}`);
+                // In a real app, you'd add the group to Firestore
+                closeCreateGroupModal();
+                e.target.reset();
+            });
+
+            // Initial state: Show login page
+             loginPage.style.display = 'flex';
+        });
+    </script>
+</body>
+</html>
